@@ -1,32 +1,28 @@
-import allure
 import pytest
 from selenium import webdriver
-
+from web_locators import UIWorkerLocators
+from web_pages import UIWorkerWeb
 from api.auth_api import register_user, get_token, delete_user
 from data.urls import Urls
 from data.user_data import get_user_for_register
-from web_locators import UIWorkerLocators
-from web_pages import UIWorkerWeb
+from api.auth_api import register_user, get_token, delete_user
+from data.urls import Urls
+from data.user_data import get_user_for_register
 
-
-@allure.step('Открытие браузера')
-@pytest.fixture
-def driver_do():
+@pytest.fixture(scope='function')
+def chrome_driver():
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')
     driver = webdriver.Chrome(options=chrome_options)
     driver.set_window_size(1920, 1080)
     driver.get(Urls.url_main)
-
     yield driver
-
     driver.quit()
 
 
 @pytest.fixture(scope='function')
-def pages(driver_do):
-    return UIWorkerWeb(driver_do, UIWorkerLocators())
-
+def pages(chrome_driver):
+    return UIWorkerWeb(chrome_driver, UIWorkerLocators())
 
 @pytest.fixture(scope='function')
 def user_data(request):
