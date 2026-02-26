@@ -5,9 +5,6 @@ from web_pages import UIWorkerWeb
 from api.auth_api import register_user, get_token, delete_user
 from data.urls import Urls
 from data.user_data import get_user_for_register
-from api.auth_api import register_user, get_token, delete_user
-from data.urls import Urls
-from data.user_data import get_user_for_register
 
 @pytest.fixture(scope='function')
 def chrome_driver():
@@ -18,7 +15,6 @@ def chrome_driver():
     driver.get(Urls.url_main)
     yield driver
     driver.quit()
-
 
 @pytest.fixture(scope='function')
 def pages(chrome_driver):
