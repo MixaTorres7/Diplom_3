@@ -40,24 +40,16 @@ class MainPage(BasePage):
 
     @allure.step('Получаем значение счетчика ингредиента')
     def get_count_value(self):
-        counters = self.driver.find_elements(*self.locators.INGREDIENT_COUNTER)
-        if counters:
-            value = counters[0].text
-        else:
-            value = '0'
-        if value == '':
+        value = self.driver.find_element(*self.locators.INGREDIENT_COUNTER).text
+        if value == '' or value is None:
             value = '0'
         return int(value)
 
     def drag_until_order_ready(self):
         for _ in range(3):
             self.drag_and_drop_on_element(self.locators.BUN_INGREDIENT, self.locators.ORDER_BASKET)
-            time.sleep(1)
-            try:
-                wait_until(self.driver, 5, EC.element_to_be_clickable(self.locators.CREATE_ORDER_BUTTON))
-                return
-            except Exception:
-                pass
+            wait_until(self.driver, 2, EC.element_to_be_clickable(self.locators.CREATE_ORDER_BUTTON))
+        wait_until(self.driver, 5, EC.element_to_be_clickable(self.locators.CREATE_ORDER_BUTTON))
 
     @allure.step('Добавить ингредиент в заказ')
     def add_filling_to_order(self):
@@ -88,6 +80,5 @@ class MainPage(BasePage):
 
     @allure.step('Закрыть модальное окно после создания заказа')
     def click_close_modal_order(self):
-        time.sleep(5)
         wait_until(self.driver, 10, EC.element_to_be_clickable(self.locators.CLOSE_MODAL_ORDER))
         self.move_to_element_and_click(self.locators.CLOSE_MODAL_ORDER)
