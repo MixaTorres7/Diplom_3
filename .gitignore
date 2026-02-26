@@ -38,6 +38,7 @@ wheels/
 .installed.cfg
 *.egg
 MANIFEST
+allure_results/*
 
 ### Testing
 htmlcov/
